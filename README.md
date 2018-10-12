@@ -6,13 +6,12 @@ Exploring the http protocol with interactive tools
 $ ./server.js
 ```
 
-##### telnet and netcat
+##### telnet, netcat and nodeJS
 
 ```bash
-$ [telnet | nc] localhost 8989
-# GET
+$ [telnet | nc | ./tcp-client.js] localhost 8989
 GET / HTTP/1.1
-Host: localhost
+#Host: localhost
 # Connection: close
 <return>
 
@@ -20,10 +19,9 @@ Host: localhost
 hi
 0 # end char
 
-# POST
 POST / HTTP/1.1
-Host: localhost
-Content-Type: application/x-www-form-urlencoded
+#Host: localhost
+#Content-Type: application/x-www-form-urlencoded
 Content-Length: 19
 
 foo=bar&true=false
@@ -39,4 +37,4 @@ you sent me: foo=bar
 ```
 
 # todos
-- [ ] node tcp interactive
+- [x] node tcp interactive
