@@ -4,6 +4,9 @@ const http = require('http');
 const srv = http.createServer();
 const PORT = 8989;
 
+srv.keepAliveTimeout = 0; // disable connection timeout; default 5 secs
+srv.setTimeout(5 * 60 * 1000) // prolong socket timeout to 5 mins; default 2 mins
+
 const router = {
 	go: function(req, res) {
 		this[req.method](req, res);
@@ -13,17 +16,10 @@ const router = {
 		res.end('hi');
 	},
 	'POST': function(req, res) {
-		let data = "";
-
-		req.on('data', chunk => {
-			data += chunk;
-		}).on('end', () => {
-			res.writeHead(200, {'Content-Type':'text/html'});
-			return res.end(`you sent me: ${ data }`);
-		});
+		req.pipe(res);
 	}
 };
 
 srv
 	.on('request', router.go.bind(router))
-	.listen(PORT, () => { console.log(`http running on port ${ PORT }`) })
+	.listen(PORT, () => { console.log(`http server listening on port ${ PORT }`) })
